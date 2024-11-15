@@ -1,6 +1,7 @@
+const bcrypt = require('bcrypt');
+
 const Admin = require('../models/adminModel');
-const isAdminValidated = require('../utils/validations')
-const bcrypt = require('bcrypt')
+const isAdminValidated = require('../utils/validations');
 
 const adminAuth = async (req, res) => {
     try {

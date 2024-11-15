@@ -10,6 +10,8 @@ const User = require('./models/userModel');
 const Product = require('./models/productModel');
 const adminAuth = require('./controllers/adminAuth')
 
+const authRoute = require('./routes/authRoute')
+
 
 const { dbConnection } = require('./config/database');
 dbConnection()
@@ -23,4 +25,5 @@ dbConnection()
 const dbgr = require('debug')("development: mongoose");
 
 app.post("/admin", adminAuth);
+app.use("/", authRoute);
 
