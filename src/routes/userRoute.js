@@ -1,14 +1,16 @@
 const express = require('express');
-const authRoute = express.Router();
+const userRouter = express.Router();
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-const User = require('../models/userModel')
+const User = require('../models/userModel');
+const userAuth = require('../middlewares/userAuth')
 
 const { isUserValidated } = require('../utils/validations')
 const { isLoginUserValidated } = require('../utils/validations')
 
-authRoute.post("/signup", async (req, res) => {
+
+userRouter.post("/signup", async (req, res) => {
     try {
         isUserValidated(req);
         const { name, emailId, password, image, contact, orders } = req.body;
@@ -30,11 +32,11 @@ authRoute.post("/signup", async (req, res) => {
         })
 
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send(error.message).redirect("/");
     }
 });
 
-authRoute.post("/login", async (req, res) => {
+userRouter.post("/login", async (req, res) => {
     try {
         isLoginUserValidated(req);
         const { emailId, password } = req.body;
@@ -52,12 +54,25 @@ authRoute.post("/login", async (req, res) => {
         console.log(token)
 
         res.cookie("token", token)
+        // res.json({
+        //     message: "Login Succesful"
+        // })
+
+        res.render("pages/shop");
+    } catch (err) {
+        res.status(400).send(err.message).redirect("/");
+    }
+});
+
+userRouter.get("/profile", userAuth, async (req, res) => {
+    try {
+        const user = req.user;
         res.json({
-            message: "Login Succesful"
+            user
         })
     } catch (err) {
         res.status(400).send(err.message);
     }
 })
 
-module.exports = authRoute;
+module.exports = userRouter;

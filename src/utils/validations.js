@@ -45,4 +45,4 @@ const isLoginUserValidated = (req) => {
 }
 
 
-module.exports = { isAdminValidated, isAdminValidated, isLoginUserValidated };
+module.exports = { isUserValidated, isAdminValidated, isLoginUserValidated };
